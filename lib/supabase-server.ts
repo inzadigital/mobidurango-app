@@ -1,3 +1,5 @@
+import 'server-only';
+
 /**
  * Cliente Supabase para el servidor (SSR)
  *
@@ -6,8 +8,9 @@
  *   - Route Handlers (app/api/.../route.ts)
  *   - Server Actions
  *
- * Gestiona cookies automáticamente, lo que permite mantener
- * la sesión del usuario entre peticiones.
+ * La directiva `server-only` arriba garantiza que este archivo
+ * NUNCA será incluido en el bundle del navegador, lo que evita
+ * errores de Next.js al compilar.
  */
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
@@ -29,8 +32,8 @@ export async function createSupabaseServerClient() {
               cookieStore.set(name, value, options);
             });
           } catch {
-            // El "setAll" se llama desde Server Components a veces.
-            // Esto se ignora porque middleware ya refresca la sesión.
+            // Server Components pueden llamar setAll pero no pueden modificar cookies.
+            // El middleware ya refresca la sesión, así que ignoramos el error aquí.
           }
         },
       },
