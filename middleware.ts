@@ -8,7 +8,7 @@
  *
  * Se aplica solo a las rutas que coincidan con el "matcher" al final.
  */
-import { createServerClient } from '@supabase/ssr';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
@@ -22,7 +22,7 @@ export async function middleware(request: NextRequest) {
         getAll() {
           return request.cookies.getAll();
         },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           );
@@ -43,7 +43,6 @@ export async function middleware(request: NextRequest) {
   const esAdminProtegido = url.startsWith('/admin') && url !== '/admin/login';
 
   if (esAdminProtegido && !user) {
-    // No logueado → redirigir a login
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = '/admin/login';
     return NextResponse.redirect(loginUrl);
@@ -61,13 +60,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Aplicar a todas las rutas excepto:
-     *   - _next/static (archivos estáticos)
-     *   - _next/image (optimización de imágenes)
-     *   - favicon.ico, etc.
-     *   - api/* (ya tienen su propia lógica)
-     */
     '/((?!_next/static|_next/image|favicon.ico|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
