@@ -1,11 +1,7 @@
 /**
  * Sidebar del admin
  *
- * Navegación lateral con:
- *   - Logo
- *   - Enlaces de navegación
- *   - Info del usuario
- *   - Botón logout
+ * Client Component: importa solo de auth-types (seguro en navegador).
  */
 'use client';
 
@@ -14,8 +10,8 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
-import type { UsuarioAdmin } from '@/lib/auth';
-import { LABELS_ROL } from '@/lib/auth';
+import type { UsuarioAdmin } from '@/lib/auth-types';
+import { LABELS_ROL } from '@/lib/auth-types';
 
 export function Sidebar({ usuario }: { usuario: UsuarioAdmin }) {
   const router = useRouter();
