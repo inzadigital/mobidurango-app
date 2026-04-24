@@ -9,10 +9,9 @@ import 'server-only';
  *   - Server Actions
  *
  * La directiva `server-only` arriba garantiza que este archivo
- * NUNCA será incluido en el bundle del navegador, lo que evita
- * errores de Next.js al compilar.
+ * NUNCA será incluido en el bundle del navegador.
  */
-import { createServerClient } from '@supabase/ssr';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
 export async function createSupabaseServerClient() {
@@ -26,7 +25,7 @@ export async function createSupabaseServerClient() {
         getAll() {
           return cookieStore.getAll();
         },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
           try {
             cookiesToSet.forEach(({ name, value, options }) => {
               cookieStore.set(name, value, options);
