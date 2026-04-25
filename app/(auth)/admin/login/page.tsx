@@ -1,12 +1,3 @@
-/**
- * Página de login del admin
- *
- * URL: /admin/login
- *
- * Está en app/(auth)/ — un Route Group — para que NO herede
- * el layout protegido de app/admin/. La URL final sigue siendo
- * /admin/login porque los Route Groups no afectan al path.
- */
 'use client';
 
 import { useState } from 'react';
