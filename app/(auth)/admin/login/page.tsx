@@ -10,11 +10,11 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [cargando, setCargando] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState('');
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
+    setErrorMsg('');
     setCargando(true);
 
     const { error } = await supabase.auth.signInWithPassword({
@@ -23,7 +23,7 @@ export default function LoginPage() {
     });
 
     if (error) {
-      setError('Emaila edo pasahitza okerra da. Saiatu berriro.');
+      setErrorMsg('Emaila edo pasahitza okerra da. Saiatu berriro.');
       setCargando(false);
       return;
     }
@@ -89,9 +89,9 @@ export default function LoginPage() {
             />
           </div>
 
-          {error && (
+          {errorMsg && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-              {error}
+              {errorMsg}
             </div>
           )}
 
